@@ -5,7 +5,8 @@ first run
  k6 run --vus 50 --duration 10s simpletest.js
 ```
 
-Gives a P90 at 6 seconds. Not good!!
+Gives a P90 at 6 seconds. Not good!! but not Unexpected since we have only given the Poor lambda 512mb of memory and delayed 
+an execution for at least 1 second, so that the incoming requests will pile up and causing cold starts. 
 
 ```text
      data_received..................: 378 kB 30 kB/s
@@ -25,4 +26,6 @@ Gives a P90 at 6 seconds. Not good!!
      vus............................: 6      min=6       max=50
      vus_max........................: 50     min=50      max=50
 ```
+A Second run the the same parameters - no code change, right after the initial run cuts the P90 3.26s - and P95 to 3.43s
+
 
