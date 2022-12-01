@@ -1,5 +1,8 @@
+# Lambda SnapStart Example using SAM
 
-first run 
+
+## How to replicate this sample  
+
 
 ```sh
  k6 run --vus 50 --duration 10s simpletest.js
@@ -32,7 +35,7 @@ default ✓ [======================================] 50 VUs  10s
 I then deleted the SAM application with ````sam delete```` and did a new build and  to get a new Lambda environment up and running 
 With SnapStart. Wait? This is not as promised...
 
-```json
+```text
 
      data_received..................: 359 kB 28 kB/s
      data_sent......................: 33 kB  2.6 kB/s
@@ -55,7 +58,7 @@ With SnapStart. Wait? This is not as promised...
 After a minor code change and a re-deployment, I now have two versions; If the second run was faster due to warm lambdas- or 
 due to SnapStart is not good to know. 
 
-```json
+```text
 
      data_received..............: 423 kB  36 kB/s
      data_sent..................: 39 kB   3.3 kB/s
@@ -77,7 +80,7 @@ due to SnapStart is not good to know.
 
 There is one thing we can do actually - we can bump up the vusers to 100 and 
 
-```json
+```text
      data_received..............: 839 kB  66 kB/s
      data_sent..................: 78 kB   6.1 kB/s
      http_req_blocked...........: avg=254.9ms  min=0s       med=1µs      max=2.48s  p(90)=1.68s    p(95)=1.74s
