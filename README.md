@@ -15,6 +15,13 @@ encrypts the snapshot, and caches it for low-latency access.
 
 To use Java SnapStart, you only have to add these two lines in your CloudFormation- or Serverless template
 
+## What is in this repository
+
+This repo contains a SAM application with a Java Lambda that is "SnapStarted", and a GitHub Actions workflow to Deploy that into your AWS account if you provide 
+repo secrets in your fork. 
+
+It also contains a simple load test using the K6 framework for load testing that can be started from the GitHub actions UI. 
+
 ```text
   SnapStart:
     ApplyOn: PublishedVersions
