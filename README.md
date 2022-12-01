@@ -6,12 +6,18 @@ Make a fork of this repository. Go to GitHub actions, Make two repository secret
 
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
+* SAM_ARTIFACT_BUCKET - (The name of any bucket that can be used for Lambda deployment) 
 
-Run the provision_lambda workflow. 
-
-Use the output of the provision_lambda workflow - and get the URL of the lambda function endpoint. 
+Run the provision_lambda workflow from the GitHub actions UI. 
 
 ## running the load test
+
+Look at the output of the provision_lambda job  and get the URL of the lambda function endpoint.
+Create a repository secret with the name 
+
+* Change the LAMBDA_ENDPOINT environment variable in ```k6-loadtest.yml``` to this URL and commit. 
+
+Run the Load test from the GitHub actions UI.
 
 ```text
   data_received..................: 190 kB 18 kB/s
