@@ -37,7 +37,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        String output = String.valueOf(arraySum != null ? arraySum.intValue() : "not set");
+        String output = String.valueOf(arraySum != null ? arraySum.intValue() : doSomeWorkPlease());
         return response.withStatusCode(200).withBody(output);
     }
 
