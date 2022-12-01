@@ -17,7 +17,8 @@ Create a repository secret with the name
 
 * Change the LAMBDA_ENDPOINT environment variable in ```k6-loadtest.yml``` to this URL and commit. 
 
-Run the Load test from the GitHub actions UI.
+Run the Load test from the GitHub actions UI. This is an example of K6 output. Look at the line ```iteration_duration```  
+to see statistics for the entire response 
 
 ```text
   data_received..................: 190 kB 18 kB/s
