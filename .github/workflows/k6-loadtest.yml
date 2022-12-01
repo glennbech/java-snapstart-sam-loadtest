@@ -1,9 +1,11 @@
 name: Load test
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-
   build:
     name: Run k6 test
     runs-on: ubuntu-latest
