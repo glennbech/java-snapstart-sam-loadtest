@@ -14,13 +14,21 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import org.crac.Core;
+import org.crac.Resource;
 
 import static java.math.BigInteger.ZERO;
 
 /**
  * Handler for requests to Lambda function.
  */
-public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent>, Resource {
+
+    BigInteger arraySum;
+
+    public App() {
+        Core.getGlobalContext().register(this);
+    }
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         Map<String, String> headers = new HashMap<>();
@@ -29,12 +37,13 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        String output = String.valueOf(doSomeWorkPlease());
+        String output = String.valueOf(arraySum != null ? arraySum.intValue() : "not set");
         return response.withStatusCode(200).withBody(output);
     }
 
     /**
-     * Creates a randomly generated 100,000,0000 sized two-dimensional array with values between 0 and 42, and then sums them
+     * This method creates a randomly generated 100 million sized, two-dimensional
+     * array with values between 0 and 42, and then sums them
      *
      * @return the sum of the randomly generated Array
      */
@@ -49,5 +58,14 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
                 .flatMapToInt(Arrays::stream)
                 .mapToObj(BigInteger::valueOf)
                 .reduce(ZERO, BigInteger::add);
+    }
+
+    @Override
+    public void beforeCheckpoint(org.crac.Context<? extends Resource> context) throws Exception {
+        arraySum = doSomeWorkPlease();
+    }
+
+    @Override
+    public void afterRestore(org.crac.Context<? extends Resource> context) throws Exception {
     }
 }

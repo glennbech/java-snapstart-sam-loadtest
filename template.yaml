@@ -8,8 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 20
-    MemorySize: 128
+    Timeout: 600
 
 Resources:
   HelloWorldFunction:
@@ -18,7 +17,7 @@ Resources:
       CodeUri: HelloWorldFunction
       Handler: helloworld.App::handleRequest
       Runtime: java11
-      MemorySize: 512
+      MemorySize: 1024
       AutoPublishAlias: live
       SnapStart:
         ApplyOn: PublishedVersions

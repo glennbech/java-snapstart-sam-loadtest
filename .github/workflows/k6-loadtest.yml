@@ -1,0 +1,20 @@
+name: Load test
+on:
+  workflow_dispatch:
+
+environment:
+  LAMBDA_ENDPOINT: 'https://4u7wo3bpjh.execute-api.eu-west-1.amazonaws.com/Prod/hello/'
+  THREADS: 20
+  DURATION: '10s'
+jobs:
+  build:
+    name: Run k6 test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run k6 local test
+        uses: k6io/action@v0.2.0
+        with:
+          filename: k6/simpletest.js
+          flags: --vus $THREADS --duration $DURATION
