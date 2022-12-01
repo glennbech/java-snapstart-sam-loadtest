@@ -1,5 +1,31 @@
 ### Example app to Demonstrate AWS lambda SnapStart with AWS SAM
 
+Official documentation ; https://aws.amazon.com/blogs/compute/starting-up-faster-with-aws-lambda-snapstart/
+
+## What's going on? 
+
+Since the birth of AWS lambda, "Cold starts" have been a major headache for developers. A lot of creative solutions try
+to fix this problem - where some customer invocations take significantly more time than others because the Java runtime  
+environment needs to be fired up. 
+
+
+Now, at Re:Invent 2022 With the release of SnapStart - the function’s initialization is done ahead of time when you publish a function version. 
+Lambda takes a Firecracker microVM snapshot of the memory and disk state of the initialized execution environment, 
+encrypts the snapshot, and caches it for low-latency access.
+
+To use Java SnapStart, you only have to add these two lines in your CloudFormation- or Serverless template
+
+```text
+  SnapStart:
+    ApplyOn: PublishedVersions
+```
+
+In addition to this feature, you can now also utilize the Java "Crac" library to cache state in the snapshots stored 
+by Lambda SnapStart to further optimization. 
+
+The lambda in this demo repository creates 100 million random numbers and sums them, just to have some time consuning task.
+When you run the load test, you'll se that the Lambda performs well, w
+
 ## How deploy the lambda
 
 Make a fork of this repository. Go to GitHub actions, Make two repository secrets in your fork; 

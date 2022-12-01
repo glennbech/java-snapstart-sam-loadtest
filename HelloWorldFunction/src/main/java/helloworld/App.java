@@ -43,9 +43,11 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
     /**
      * This method creates a randomly generated 100 million sized, two-dimensional
-     * array with values between 0 and 42, and then sums them
+     * array with values between 0 and 42, and then sums them. Yeah, I could
+     * have made a one dimensional array - But I wanted to play around a bit
+     * with Java streams since my coding is rusty :)
      *
-     * @return the sum of the randomly generated Array
+     * @return the s'um of the randomly generated Array
      */
     public static BigInteger doSomeWorkPlease() {
         int[][] matrix = new int[10000][10000];
