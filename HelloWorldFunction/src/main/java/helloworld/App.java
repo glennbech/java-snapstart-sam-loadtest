@@ -45,6 +45,9 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
                 matrix[n][j] = (int) (Math.random() * 42);
             }
         }
-        return Arrays.stream(matrix).flatMapToInt(Arrays::stream).mapToObj(BigInteger::valueOf).reduce(ZERO, BigInteger::add);
+        return Arrays.stream(matrix)
+                .flatMapToInt(Arrays::stream)
+                .mapToObj(BigInteger::valueOf)
+                .reduce(ZERO, BigInteger::add);
     }
 }
