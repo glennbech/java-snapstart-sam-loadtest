@@ -4,12 +4,12 @@ Official documentation ; https://aws.amazon.com/blogs/compute/starting-up-faster
 
 ## What's going on? 
 
-Since the birth of AWS lambda, "Cold starts" have been a major headache for developers. A lot of creative solutions try
-to fix this problem - where some customer invocations take significantly more time than others because the Java runtime  
-environment needs to be fired up. 
+Since the birth of AWS lambda, "Cold starts" have been a major headache for developers. A lot of creative people have tried to make 
+creative solutions to work around this problem - The core of the problem being that some Lambda invocations take significantly more time than 
+others because the runtime environment needs to be fired up. For Java, this has been especially painfull since the Java VM is on the heavy side 
+compared to more lean languages like Go.
 
-
-Now, at Re:Invent 2022 With the release of SnapStart - the function’s initialization is done ahead of time when you publish a function version. 
+At Re:Invent 2022 with the release of SnapStart a lot of this pain is taken away - the function’s initialization is done ahead of time when you publish a function version. 
 Lambda takes a Firecracker microVM snapshot of the memory and disk state of the initialized execution environment, 
 encrypts the snapshot, and caches it for low-latency access.
 
@@ -28,7 +28,8 @@ When you run the load test, you'll se that the Lambda performs well, w
 
 ## How deploy the lambda
 
-Make a fork of this repository. Go to GitHub actions, Make two repository secrets in your fork; 
+* Make a fork of this repository. Go to GitHub actions. 
+* Make two repository secrets in your fork; 
 
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
@@ -38,13 +39,24 @@ Run the provision_lambda workflow from the GitHub actions UI.
 
 ## running the load test
 
-Look at the output of the provision_lambda job  and get the URL of the lambda function endpoint.
-Create a repository secret with the name 
+Look at the output of the provision_lambda job and get the URL of the lambda function endpoint. 
 
 * Change the LAMBDA_ENDPOINT environment variable in ```k6-loadtest.yml``` to this URL and commit. 
 
 Run the Load test from the GitHub actions UI. This is an example of K6 output. Look at the line ```iteration_duration```  
-to see statistics for the entire response 
+to see statistics for the entire response. 
+
+
+## Java on Crac
+
+In this repo I have also played around with Crac. That you can use together with SnapStart, to load up state into you 
+"snapshotted" Lambda runties ahead of time. For some usecases this can be very useful. I talked to a guy at the conference
+that made a lambda to generate PDFs. he pre-loaded all data for binary fonts into the Lambda snapshot saved tons of init time 
+on Lambda strtups. 
+
+In this repo I simulate a "have init" by just making 100 million random numbers between 0 and 42, and then sum them. 
+
+Try to remove SnapsTart from thee ```template.yml``` file and see the response times 10x 
 
 ```text
   data_received..................: 190 kB 18 kB/s
@@ -63,7 +75,4 @@ to see statistics for the entire response
      iterations.....................: 160    14.771168/s
      vus............................: 20     min=20      max=20
      vus_max........................: 20     min=20      max=20
-
 ```
-
-
