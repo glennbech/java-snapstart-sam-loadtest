@@ -52,20 +52,9 @@ Look at the output of the provision_lambda job and get the URL of the lambda fun
 
 * Change the LAMBDA_ENDPOINT environment variable in ```k6-loadtest.yml``` to this URL and commit. 
 
-Run the Load test from the GitHub actions UI. This is an example of K6 output. Look at the line ```iteration_duration```  
-to see statistics for the entire response. 
+Run the Load test from the GitHub actions UI. This is an example of K6 output. Look at the line ```iteration_duration``` to see statistics for the entire response. 
 
-
-## Java on Crac
-
-In this repo I have also played around with Crac. That you can use together with SnapStart, to load up state into you 
-"snapshotted" Lambda runties ahead of time. For some usecases this can be very useful. I talked to a guy at the conference
-that made a lambda to generate PDFs. he pre-loaded all data for binary fonts into the Lambda snapshot saved tons of init time 
-on Lambda strtups. 
-
-In this repo I simulate a "have init" by just making 100 million random numbers between 0 and 42, and then sum them. 
-
-Try to remove SnapsTart from thee ```template.yml``` file and see the response times 10x 
+Example output 
 
 ```text
   data_received..................: 190 kB 18 kB/s
@@ -85,3 +74,15 @@ Try to remove SnapsTart from thee ```template.yml``` file and see the response t
      vus............................: 20     min=20      max=20
      vus_max........................: 20     min=20      max=20
 ```
+
+
+## Java on Crac
+
+In this repo I have also played around with Crac. That you can use together with SnapStart, to load up state into you 
+"snapshotted" Lambda runties ahead of time. For some usecases this can be very useful. I talked to a guy at the conference
+that made a lambda to generate PDFs. he pre-loaded all data for binary fonts into the Lambda snapshot saved tons of init time 
+on Lambda strtups. 
+
+In this repo I simulate a "have init" by just making 100 million random numbers between 0 and 42, and then sum them. 
+
+Try to remove SnapsTart from thee ```template.yml``` file and see the response times 10x 
