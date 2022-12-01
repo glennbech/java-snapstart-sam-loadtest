@@ -8,7 +8,7 @@ jobs:
     name: Run k6 test
     runs-on: ubuntu-latest
     env:
-      LAMBDA_ENDPOINT: 'https://4u7wo3bpjh.execute-api.eu-west-1.amazonaws.com/Prod/hello/'
+      LAMBDA_ENDPOINT: 'https://wptmhzgpad.execute-api.eu-west-1.amazonaws.com/Prod/hello'
       THREADS: 20
       DURATION: '10s'
     steps:
