@@ -37,7 +37,14 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        String output = String.valueOf(arraySum != null ? arraySum.intValue() : doSomeWorkPlease());
+
+        // In a cold start scenario - this will be null, with SnapStart enabled it will always be set
+        // Since the beforeCheckpoint method will set it before a SnapShot is taken.
+        if  (arraySum == null) {
+            arraySum = doSomeWorkPlease();
+        }
+
+        String output = String.valueOf(arraySum);
         return response.withStatusCode(200).withBody(output);
     }
 
