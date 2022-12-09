@@ -85,4 +85,4 @@ on Lambda strtups.
 
 In this repo I simulate a "have init" by just making 100 million random numbers between 0 and 42, and then sum them. 
 
-Try to remove SnapsTart from thee ```template.yml``` file and see the response times 10x 
+Try to add the SnapsTart clause in this readme to the  ```template.yml``` file and see the response times drop from about 16s/request to 2-3 seconds 
