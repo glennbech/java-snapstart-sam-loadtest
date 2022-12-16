@@ -4,14 +4,13 @@ Official documentation ; https://aws.amazon.com/blogs/compute/starting-up-faster
 
 ## What's going on? 
 
-Since the birth of AWS lambda, "Cold starts" have been a major headache for developers. A lot of creative people have tried to make 
-creative solutions to work around this problem - The core of the problem being that some Lambda invocations take significantly more time than 
-others because the runtime environment needs to be fired up. For Java, this has been especially painfull since the Java VM is on the heavy side 
+Since the birth of AWS lambda, "Cold starts" have been a major headache for developers. A lot of creative people have made 
+a lot of creative solutions to work around this problem - The core of the problem being that some Lambda invocations take significantly more time than 
+others because the runtime environment needs to be fired up. For Java, this has been especially painfull and time consuming since the Java VM is on the heavy side 
 compared to more lean languages like Go.
 
 At Re:Invent 2022 with the release of SnapStart a lot of this pain is taken away - the function’s initialization is done ahead of time when you publish a function version. 
-Lambda takes a Firecracker microVM snapshot of the memory and disk state of the initialized execution environment, 
-encrypts the snapshot, and caches it for low-latency access.
+Lambda takes a Firecracker microVM snapshot of the memory and disk state of the initialized execution environment, encrypts the snapshot, and caches it for low-latency access.
 
 To use Java SnapStart, you only have to add these two lines in your CloudFormation- or Serverless template
 
@@ -20,20 +19,14 @@ To use Java SnapStart, you only have to add these two lines in your CloudFormati
     ApplyOn: PublishedVersions
 ```
 
+In addition to this feature, you can now also utilize the Java "Crac" library to cache state in the snapshots stored
+by Lambda SnapStart to further optimization.
+
 ## What is in this repository
 
 This repo contains a SAM application with a Java Lambda that is "SnapStarted", and a GitHub Actions workflow to Deploy that into your AWS account if you provide 
-repo secrets in your fork. 
-
-It also contains a simple load test using the K6 framework for load testing that can be started from the GitHub actions UI. 
-
-
-
-In addition to this feature, you can now also utilize the Java "Crac" library to cache state in the snapshots stored 
-by Lambda SnapStart to further optimization. 
-
-The lambda in this demo repository creates 100 million random numbers and sums them, just to have some time consuning task.
-When you run the load test, you'll se that the Lambda performs well, w
+repo secrets in your fork.  It also contains a simple load test using the K6 framework for load testing that can be started from the GitHub actions UI.  The lambda in this demo repository creates 100 million random numbers and sums them, just to have some time consuning task.
+When you run the load test, you'll se that the Lambda performs well.
 
 ## How deploy the lambda
 
@@ -79,10 +72,10 @@ Example output
 ## Java on Crac
 
 In this repo I have also played around with Crac. That you can use together with SnapStart, to load up state into you 
-"snapshotted" Lambda runties ahead of time. For some usecases this can be very useful. I talked to a guy at the conference
-that made a lambda to generate PDFs. he pre-loaded all data for binary fonts into the Lambda snapshot saved tons of init time 
+"snapshotted" Lambda runties ahead of time. For some usecases this can be very useful. I talked to a guy at Re:invent
+that made a lambda to generate PDFs. He pre-loaded all data for binary fonts into the Lambda snapshot saved tons of init time 
 on Lambda strtups. 
 
-In this repo I simulate a "have init" by just making 100 million random numbers between 0 and 42, and then sum them. 
+In this repo I simulate a "heavy init" by just making 100 million random numbers between 0 and 42, and then sum them. 
 
 Try to add the SnapsTart clause in this readme to the  ```template.yml``` file and see the response times drop from about 16s/request to 2-3 seconds 
